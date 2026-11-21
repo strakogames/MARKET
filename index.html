@@ -1,0 +1,610 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080808">
+<title>STRAKO GAMES — Official Store</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+:root{--red:#ed152d;--bg:#080808;--panel:#111;--line:#272727;--muted:#929292}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:white;font-family:Inter,Arial,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}
+.top{height:75px;background:#0c0c0c;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:30}
+.logo{font-size:24px;font-weight:900;letter-spacing:-1.5px}
+.logo span{color:var(--red)}
+nav{display:flex;gap:22px}
+nav a{color:#aaa;text-decoration:none;font-size:11px;font-weight:800;cursor:pointer}
+nav a:hover{color:white}
+.btn{background:var(--red);border:0;color:white;padding:12px 17px;border-radius:4px;font-weight:900;font-size:11px}
+.btn:hover{background:#ff3048}
+.secondary{background:#222;border:1px solid #393939}
+.container{width:90%;max-width:1450px;margin:auto}
+.hero{min-height:480px;display:flex;align-items:center;padding:65px 8%;background:linear-gradient(90deg,#080808 12%,#080808e8 48%,transparent),linear-gradient(0deg,#080808,transparent 50%),url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1800') center/cover}
+.hero-content{max-width:650px}
+.kicker{font-size:10px;letter-spacing:4px;font-weight:900;color:var(--red)}
+.hero h1{font-size:clamp(43px,7vw,83px);letter-spacing:-5px;line-height:.99;margin:22px 0}
+.hero p{color:#aaa;max-width:480px;font-size:13px;line-height:1.8}
+.actions{display:flex;gap:12px;margin-top:25px;flex-wrap:wrap}
+.section{padding:48px 0}
+.heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:24px}
+.heading h2{font-size:23px;margin:7px 0}
+.heading small{color:#888}
+.search{width:100%;padding:15px;background:#131313;border:1px solid #333;border-radius:4px;color:white;outline:none;margin-bottom:18px}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:24px}
+.filter{background:#171717;border:1px solid #333;color:#aaa;padding:9px 15px;font-size:10px;font-weight:800;border-radius:3px}
+.filter.active{background:var(--red);border-color:var(--red);color:white}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{background:#121212;border:1px solid #292929;border-radius:6px;overflow:hidden;transition:.2s}
+.card:hover{transform:translateY(-4px);border-color:#7a1b29}
+.cover{height:175px;position:relative;background:#222}
+.cover img{width:100%;height:100%;object-fit:cover}
+.tag{position:absolute;top:12px;left:12px;background:var(--red);padding:6px 9px;font-size:9px;font-weight:900}
+.info{padding:16px}
+.info h3{font-size:14px;margin:0 0 9px}
+.info p{font-size:11px;color:#888;line-height:1.6;min-height:36px}
+.meta{display:flex;justify-content:space-between;color:#999;font-size:10px;margin:13px 0}
+.info .btn{width:100%}
+.price{color:#fff;font-weight:900}
+.price span{color:#e5b85c}
+.empty{padding:60px;text-align:center;color:#888;grid-column:1/-1}
+.panel{background:#111;border:1px solid #292929;padding:24px;border-radius:6px;margin-bottom:16px}
+.panel h3{font-size:15px}
+.panel p{color:#999;font-size:12px;line-height:1.8}
+.wallet{background:linear-gradient(120deg,#310810,#111 70%);border:1px solid #66202c;border-radius:8px;padding:25px}
+.wallet strong{font-size:37px;display:block;margin:13px 0}
+.wallet small{color:#aaa}
+.input{width:100%;padding:14px;background:#080808;color:white;border:1px solid #393939;border-radius:4px;margin:8px 0;outline:none}
+.row{display:flex;gap:10px;align-items:center}
+.row>*{flex:1;min-width:0}
+.page{display:none;min-height:65vh;padding:45px 0}
+.page.active{display:block}
+#home.active{display:block}
+.news-item{padding:18px;border-bottom:1px solid #303030}
+.news-item b{font-size:13px}
+.news-item p{font-size:12px;color:#888}
+.modal{position:fixed;inset:0;background:#000d;display:none;align-items:center;justify-content:center;padding:15px;z-index:100}
+.modal.show{display:flex}
+.dialog{background:#151515;border:1px solid #444;border-radius:8px;width:100%;max-width:540px;padding:25px;max-height:90vh;overflow:auto;position:relative}
+.close{position:absolute;right:16px;top:13px;background:none;border:0;color:white;font-size:24px}
+.dialog img{width:100%;height:190px;object-fit:cover;border-radius:4px}
+.dialog h2{font-size:24px}
+.muted{color:#888;font-size:12px;line-height:1.8}
+.progress{height:9px;background:#333;border-radius:20px;overflow:hidden;margin:17px 0}
+.progress div{height:100%;width:0;background:var(--red);transition:width .2s}
+.download-screen{position:fixed;inset:0;z-index:200;background:#080808;display:none;align-items:center;justify-content:center;text-align:center;padding:20px}
+.download-screen.show{display:flex}
+.download-content{width:100%;max-width:650px}
+.download-content img{width:190px;height:110px;object-fit:cover;border-radius:5px}
+.download-content h1{font-size:30px}
+.download-content .progress{height:12px}
+.timer{display:flex;gap:10px;margin:20px 0}
+.timer div{flex:1;background:#181818;padding:13px 4px;border:1px solid #333}
+.timer b{font-size:22px;display:block}
+.timer small{color:#888;font-size:9px}
+footer{border-top:1px solid #292929;padding:30px 5%;display:flex;justify-content:space-between;flex-wrap:wrap;color:#777;font-size:10px}
+@media(max-width:950px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:650px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.cover{height:125px}.top{padding:0 3%}.logo{font-size:18px}nav{gap:9px}nav a{font-size:9px}.optional{display:none}.container{width:93%}.hero{padding:55px 6%;min-height:400px}.info{padding:11px}.info h3{font-size:12px}}
+@media(max-width:380px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="top">
+ <div class="logo" onclick="go('home')">STRAKO<span>.</span>GAMES</div>
+ <nav>
+  <a onclick="go('home')">HOME</a>
+  <a onclick="go('store')">STORE</a>
+  <a onclick="go('news')">NEWS</a>
+  <a class="optional" onclick="go('library')">MY GAMES</a>
+  <a onclick="go('wallet')">WALLET</a>
+ </nav>
+ <button class="btn" id="accountBtn" onclick="accountAction()">SIGN IN</button>
+</header>
+
+<main id="home" class="active">
+ <section class="hero">
+  <div class="hero-content">
+   <div class="kicker">THE OFFICIAL STRAKO STORE</div>
+   <h1>YOUR NEXT<br>GAME STARTS<br><span style="color:var(--red)">HERE.</span></h1>
+   <p>Discover new worlds. Get your favourite games.
+   Experience the future of gaming with STRAKO GAMES.</p>
+   <div class="actions">
+    <button class="btn" onclick="go('store')">EXPLORE STORE ↗</button>
+    <button class="btn secondary" onclick="go('library')">MY LIBRARY</button>
+   </div>
+  </div>
+ </section>
+ <section class="container section">
+  <div class="heading"><div><div class="kicker">FEATURED TITLES</div><h2>FEATURED GAMES</h2></div></div>
+  <div class="grid" id="featured"></div>
+ </section>
+ <section class="container section">
+  <div class="heading"><div><div class="kicker">LATEST UPDATES</div><h2>GAME NEWS</h2></div><button class="btn secondary" onclick="go('news')">ALL NEWS</button></div>
+  <div class="panel" id="homeNews"></div>
+ </section>
+</main>
+
+<section id="store" class="page container">
+ <div class="kicker">DISCOVER YOUR NEXT GAME</div>
+ <div class="heading"><div><h2>THE STORE</h2><small id="count"></small></div></div>
+ <input class="search" id="search" placeholder="Search games..." oninput="renderStore()">
+ <div class="filters" id="filters">
+  <button class="filter active" onclick="category('All',this)">ALL</button>
+  <button class="filter" onclick="category('Action',this)">ACTION</button>
+  <button class="filter" onclick="category('FPS',this)">FPS</button>
+  <button class="filter" onclick="category('Adventure',this)">ADVENTURE</button>
+  <button class="filter" onclick="category('Racing',this)">RACING</button>
+  <button class="filter" onclick="category('Simulation',this)">SIMULATION</button>
+ </div>
+ <div class="grid" id="storeGrid"></div>
+</section>
+
+<section id="library" class="page container">
+ <div class="kicker">YOUR COLLECTION</div><h1>MY GAMES</h1>
+ <div class="grid" id="libraryGrid"></div>
+</section>
+
+<section id="news" class="page container">
+ <div class="kicker">LATEST UPDATES</div><h1>STRAKO NEWS</h1>
+ <div class="panel" id="newsList"></div>
+</section>
+
+<section id="wallet" class="page container">
+ <div class="kicker">PAYMENT CENTER</div><h1>MY WALLET</h1>
+ <div class="wallet">
+  <small>AVAILABLE BALANCE</small>
+  <strong id="balance">0 POINTS</strong>
+  <small>STRAKO GAMES WALLET</small>
+ </div>
+ <div class="panel" style="margin-top:20px">
+  <h3>REDEEM YOUR CODE</h3>
+  <p>Enter a valid STRAKO redeem code to receive points.</p>
+  <div class="row">
+   <input class="input" id="redeemInput" placeholder="STRK-XXXX-XXXX">
+   <button class="btn" onclick="redeem()">REDEEM</button>
+  </div>
+ </div>
+ <div class="panel">
+  <h3>PAYPAL</h3>
+  <p>PayPal is an additional payment option. It is currently disabled.</p>
+  <button class="btn secondary" disabled>PAY WITH PAYPAL — COMING SOON</button>
+ </div>
+ <div class="panel"><h3>TRANSACTION HISTORY</h3><div id="transactions" class="muted"></div></div>
+</section>
+
+<section id="account" class="page container">
+ <div class="kicker">STRAKO ID</div><h1>MY ACCOUNT</h1>
+ <div class="panel" id="accountInfo"></div>
+ <button class="btn secondary" onclick="logout()">SIGN OUT</button>
+</section>
+
+<footer>
+ <div><div class="logo">STRAKO<span>.</span>GAMES</div><p>OFFICIAL GAMING MARKETPLACE</p></div>
+ <div>© 2026 STRAKO GAMES. ALL RIGHTS RESERVED.</div>
+</footer>
+
+<div class="modal" id="gameModal">
+ <div class="dialog">
+  <button class="close" onclick="closeModal()">×</button>
+  <div id="gameDetails"></div>
+ </div>
+</div>
+
+<div class="modal" id="authModal">
+ <div class="dialog" style="max-width:410px">
+  <button class="close" onclick="document.getElementById('authModal').classList.remove('show')">×</button>
+  <div class="kicker">STRAKO ACCOUNT</div><h2 id="authTitle">CREATE ACCOUNT</h2>
+  <input class="input" id="username" placeholder="Username">
+  <input class="input" id="email" type="email" placeholder="Email">
+  <input class="input" id="password" type="password" placeholder="Password">
+  <button class="btn" style="width:100%;margin-top:12px" onclick="auth()">CONTINUE</button>
+  <p class="muted" id="authSwitch">Already have an account? <a onclick="switchAuth()" style="color:#ed152d;cursor:pointer">SIGN IN</a></p>
+ </div>
+</div>
+
+<div class="download-screen" id="downloadScreen">
+ <div class="download-content">
+  <div class="kicker">STRAKO GAME INSTALLER</div>
+  <img id="downloadImage" src="" alt="">
+  <h1 id="downloadName">DOWNLOADING</h1>
+  <p class="muted" id="downloadStatus">Preparing your download...</p>
+  <div class="progress"><div id="progressBar"></div></div>
+  <h2 id="progressText">0%</h2>
+  <p class="muted" id="downloadSize"></p>
+  <button class="btn secondary" onclick="hideDownload()">BACK TO STORE</button>
+ </div>
+</div>
+
+<script>
+
+/* =============================================
+   STRAKO GAMES — OFFICIAL STORE CONFIGURATION
+
+   ADD YOUR GAMES, NEWS AND REDEEM CODES HERE.
+============================================= */
+
+const GAMES = [
+ {
+  id:"bot-wars",
+  name:"BOT WARS",
+  image:"https://images.unsplash.com/photo-1542751371-adc38448a05e?w=900",
+  category:"FPS",
+  description:"Modern FPS combat against intelligent bots.",
+  price:500,
+  currency:"POINTS",
+  size:"43 GB",
+  status:"PRE-ORDER",
+  releaseDate:"2027-06-15T12:00:00",
+  version:"1.0.0",
+  downloadURL:"",
+  news:"BOT WARS is coming to STRAKO GAMES."
+ },
+ {
+  id:"grand-city",
+  name:"GRAND CITY LIFE",
+  image:"https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=900",
+  category:"Adventure",
+  description:"Explore a massive fictional city.",
+  price:700,
+  currency:"POINTS",
+  size:"65 GB",
+  status:"COMING SOON",
+  releaseDate:"2027-09-20T12:00:00",
+  version:"1.0.0",
+  downloadURL:"",
+  news:"Development of GRAND CITY LIFE continues."
+ },
+ {
+  id:"turbo-street",
+  name:"TURBO STREET",
+  image:"https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=900",
+  category:"Racing",
+  description:"High-speed street racing experience.",
+  price:350,
+  currency:"POINTS",
+  size:"28 GB",
+  status:"RELEASED",
+  releaseDate:"",
+  version:"1.0.0",
+  downloadURL:"",
+  news:"Welcome to TURBO STREET."
+ },
+ {
+  id:"gta-6",
+  name:"GRAND THEFT AUTO VI",
+  image:"https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=900",
+  category:"Adventure",
+  description:"Open-world action adventure.",
+  price:1000,
+  currency:"POINTS",
+  size:"150 GB",
+  status:"PRE-ORDER",
+  releaseDate:"2027-11-19T12:00:00",
+  version:"1.0.0",
+  downloadURL:"",
+  news:"Pre-order information."
+ }
+];
+
+/* Add your game news here */
+
+const NEWS = [
+ {title:"STRAKO GAMES STORE LAUNCH",
+  date:"2026-11-21",
+  game:"ALL GAMES",
+  text:"Welcome to the official STRAKO GAMES marketplace."},
+ {title:"BOT WARS ANNOUNCEMENT",
+  date:"2026-11-21",
+  game:"BOT WARS",
+  text:"A new combat experience is coming soon."}
+];
+
+/* Redeem codes: configure your private codes here */
+
+const REDEEM_CODES = {
+ "STRK-2026-500":500,
+ "STRK-VIP-1000":1000,
+ "STRK-WELCOME-100":100
+};
+
+/* LOCAL STORAGE */
+
+const DB={
+ users:"SG_USERS",
+ session:"SG_SESSION",
+ wallet:"SG_WALLETS",
+ library:"SG_LIBRARY",
+ used:"SG_USED_CODES",
+ history:"SG_HISTORY"
+};
+
+function get(k,d){
+ try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}
+}
+function put(k,v){localStorage.setItem(k,JSON.stringify(v))}
+let user=get(DB.session,null);
+let cat="All";
+let register=true;
+let selected=null;
+
+function esc(s){
+ return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+/* NAVIGATION */
+
+function go(id){
+ document.querySelectorAll("main,.page").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ window.scrollTo(0,0);
+ if(id==="library")renderLibrary();
+ if(id==="wallet")renderWallet();
+ if(id==="news")renderNews();
+ if(id==="account")renderAccount();
+}
+
+function accountAction(){
+ if(user)go("account");
+ else openAuth();
+}
+
+/* ACCOUNT */
+
+function openAuth(){
+ register=true;
+ document.getElementById("authTitle").textContent="CREATE ACCOUNT";
+ document.getElementById("username").style.display="block";
+ document.getElementById("authSwitch").innerHTML='Already have an account? <a onclick="switchAuth()" style="color:#ed152d;cursor:pointer">SIGN IN</a>';
+ document.getElementById("authModal").classList.add("show");
+}
+
+function switchAuth(){
+ register=!register;
+ document.getElementById("authTitle").textContent=register?"CREATE ACCOUNT":"SIGN IN";
+ document.getElementById("username").style.display=register?"block":"none";
+ document.getElementById("authSwitch").innerHTML=register?
+ 'Already have an account? <a onclick="switchAuth()" style="color:#ed152d;cursor:pointer">SIGN IN</a>':
+ 'New user? <a onclick="switchAuth()" style="color:#ed152d;cursor:pointer">CREATE ACCOUNT</a>';
+}
+
+function auth(){
+ const name=document.getElementById("username").value.trim();
+ const email=document.getElementById("email").value.trim().toLowerCase();
+ const pass=document.getElementById("password").value;
+ if(!email||!pass||(register&&!name)){alert("Complete all fields.");return}
+ if(pass.length<6){alert("Password must have 6 characters.");return}
+ let users=get(DB.users,[]);
+ if(register){
+  if(users.some(u=>u.email===email)){alert("Account already exists.");return}
+  users.push({name,email,pass});
+  put(DB.users,users);
+  let wallets=get(DB.wallet,{});
+  wallets[email]=0;put(DB.wallet,wallets);
+  user={name,email};
+ }else{
+  const u=users.find(x=>x.email===email&&x.pass===pass);
+  if(!u){alert("Incorrect login details.");return}
+  user={name:u.name,email:u.email};
+ }
+ put(DB.session,user);
+ document.getElementById("authModal").classList.remove("show");
+ updateHeader();alert("Welcome to STRAKO GAMES!");
+}
+
+function logout(){
+ user=null;localStorage.removeItem(DB.session);
+ updateHeader();go("home");
+}
+function updateHeader(){
+ document.getElementById("accountBtn").textContent=user?user.name:"SIGN IN";
+}
+
+/* STORE */
+
+function card(g){
+ const owned=user&&(get(DB.library,{})[user.email]||[]).includes(g.id);
+ return `<article class="card">
+  <div class="cover"><img src="${esc(g.image)}" alt="${esc(g.name)}" onerror="this.src='https://placehold.co/700x400/151515/ffffff?text=STRAKO'">
+  <span class="tag">${esc(g.status)}</span></div>
+  <div class="info">
+   <h3>${esc(g.name)}</h3>
+   <p>${esc(g.description)}</p>
+   <div class="meta"><span>${esc(g.category)}</span><span>${esc(g.size)}</span></div>
+   <div class="meta"><span class="price">${g.price} <span>PTS</span></span><span>V ${esc(g.version)}</span></div>
+   <button class="btn" onclick="details('${esc(g.id)}')">${owned?"OPEN GAME":g.status==="RELEASED"?"VIEW GAME":"VIEW DETAILS"}</button>
+  </div>
+ </article>`;
+}
+
+function renderStore(){
+ const q=(document.getElementById("search")?.value||"").toLowerCase();
+ const list=GAMES.filter(g=>(cat==="All"||g.category===cat)&&
+ (g.name+" "+g.description).toLowerCase().includes(q));
+ document.getElementById("count").textContent=list.length+" GAMES";
+ document.getElementById("storeGrid").innerHTML=list.length?list.map(card).join():'<div class="empty">NO GAMES FOUND</div>';
+}
+function category(c,b){
+ cat=c;document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));b.classList.add("active");renderStore();
+}
+
+/* GAME DETAILS & COUNTDOWN */
+
+function countdown(date){
+ if(!date)return "RELEASE DATE NOT ANNOUNCED";
+ const d=new Date(date);
+ if(isNaN(d.getTime()))return "DATE NOT AVAILABLE";
+ let n=d-new Date();
+ if(n<=0)return "RELEASE DATE REACHED";
+ const days=Math.floor(n/86400000);
+ const hours=Math.floor(n%86400000/3600000);
+ const mins=Math.floor(n%3600000/60000);
+ const secs=Math.floor(n%60000/1000);
+ return `<div class="timer">
+ <div><b>${days}</b><small>DAYS</small></div>
+ <div><b>${hours}</b><small>HOURS</small></div>
+ <div><b>${mins}</b><small>MINUTES</small></div>
+ <div><b>${secs}</b><small>SECONDS</small></div></div>`;
+}
+
+function details(id){
+ const g=GAMES.find(x=>x.id===id);if(!g)return;
+ selected=g;
+ const owned=user&&(get(DB.library,{})[user.email]||[]).includes(id);
+ const date=new Date(g.releaseDate);
+ const released=g.status==="RELEASED"||(!isNaN(date)&&date<=new Date());
+ const canBuy=g.status==="RELEASED"||g.status==="PRE-ORDER";
+ document.getElementById("gameDetails").innerHTML=`
+ <img src="${esc(g.image)}" alt="">
+ <div class="kicker" style="margin-top:17px">${esc(g.status)}</div>
+ <h2>${esc(g.name)}</h2>
+ <p class="muted">${esc(g.description)}</p>
+ <div class="meta"><span>SIZE: ${esc(g.size)}</span><span>VERSION: ${esc(g.version)}</span></div>
+ ${!released&&g.releaseDate?'<div class="kicker">RELEASE COUNTDOWN</div><div id="modalTimer">'+countdown(g.releaseDate)+'</div>':''}
+ <div class="panel"><b>GAME NEWS</b><p>${esc(g.news)}</p></div>
+ <div class="meta"><b>${g.price} POINTS</b><span>${esc(g.category)}</span></div>
+ ${owned?'<button class="btn" style="width:100%" onclick="startDownload(selected.id)">DOWNLOAD / OPEN GAME</button>':
+ canBuy?'<button class="btn" style="width:100%" onclick="buy(selected.id)">BUY WITH POINTS</button>':
+ '<button class="btn secondary" style="width:100%" disabled>NOT RELEASED</button>'}
+ <button class="btn secondary" style="width:100%;margin-top:9px" onclick="closeModal()">CLOSE</button>`;
+ document.getElementById("gameModal").classList.add("show");
+}
+
+function closeModal(){document.getElementById("gameModal").classList.remove("show")}
+
+/* POINTS PURCHASE */
+
+function balance(){
+ if(!user)return 0;
+ return get(DB.wallet,{})[user.email]||0;
+}
+
+function transaction(text){
+ if(!user)return;
+ const h=get(DB.history,{});
+ h[user.email]=h[user.email]||[];
+ h[user.email].unshift({text,date:new Date().toLocaleString()});
+ put(DB.history,h);
+}
+
+function buy(id){
+ if(!user){closeModal();openAuth();return}
+ const g=GAMES.find(x=>x.id===id);if(!g)return;
+ const library=get(DB.library,{});
+ library[user.email]=library[user.email]||[];
+ if(library[user.email].includes(id)){alert("Already in your library.");return}
+ if(balance()<g.price){alert("Not enough points. Redeem a code first.");return}
+ const wallets=get(DB.wallet,{});
+ wallets[user.email]=balance()-g.price;put(DB.wallet,wallets);
+ library[user.email].push(id);put(DB.library,library);
+ transaction("Purchased "+g.name+" for "+g.price+" points");
+ closeModal();renderWallet();alert("Purchase successful! Added to My Games.");
+ go("library");
+}
+
+/* REDEEM */
+
+function redeem(){
+ if(!user){alert("Sign in first.");return}
+ const code=document.getElementById("redeemInput").value.trim().toUpperCase();
+ const codes=get(DB.used,{});
+ codes[user.email]=codes[user.email]||[];
+ if(!REDEEM_CODES[code]){alert("Invalid redeem code.");return}
+ if(codes[user.email].includes(code)){alert("This code has already been used.");return}
+ const wallets=get(DB.wallet,{});
+ wallets[user.email]=(wallets[user.email]||0)+REDEEM_CODES[code];
+ put(DB.wallet,wallets);
+ codes[user.email].push(code);put(DB.used,codes);
+ transaction("Redeemed "+code+" +"+REDEEM_CODES[code]+" points");
+ document.getElementById("redeemInput").value="";
+ renderWallet();alert("Success! Points added to your wallet.");
+}
+
+function renderWallet(){
+ document.getElementById("balance").textContent=balance().toLocaleString()+" POINTS";
+ const h=user?(get(DB.history,{})[user.email]||[]):[];
+ document.getElementById("transactions").innerHTML=h.length?
+ h.map(x=>`<div class="news-item">${esc(x.text)}<p>${esc(x.date)}</p></div>`).join():"No transactions yet.";
+}
+
+/* LIBRARY */
+
+function renderLibrary(){
+ const ids=user?(get(DB.library,{})[user.email]||[]):[];
+ const games=GAMES.filter(g=>ids.includes(g.id));
+ document.getElementById("libraryGrid").innerHTML=games.length?
+ games.map(g=>`<article class="card"><div class="cover"><img src="${esc(g.image)}"></div><div class="info"><h3>${esc(g.name)}</h3><button class="btn" onclick="startDownload('${esc(g.id)}')">DOWNLOAD</button></div></article>`).join():
+ '<div class="empty">YOUR LIBRARY IS EMPTY. EXPLORE THE STORE.</div>';
+}
+
+/* DOWNLOAD SCREEN */
+
+function startDownload(id){
+ const g=GAMES.find(x=>x.id===id);if(!g)return;
+ if(!user){openAuth();return}
+ const ids=get(DB.library,{})[user.email]||[];
+ if(!ids.includes(id)){alert("Purchase this game first.");return}
+ if(!g.downloadURL){alert("Download URL has not been configured yet.");return}
+ closeModal();
+ document.getElementById("downloadImage").src=g.image;
+ document.getElementById("downloadName").textContent=g.name;
+ document.getElementById("downloadSize").textContent="FILE SIZE: "+g.size;
+ document.getElementById("downloadStatus").textContent="Connecting to download server...";
+ document.getElementById("downloadScreen").classList.add("show");
+ document.getElementById("progressBar").style.width="0%";
+ document.getElementById("progressText").textContent="0%";
+ document.getElementById("downloadStatus").textContent="Starting your download...";
+ const a=document.createElement("a");
+ a.href=g.downloadURL;a.download="";a.target="_blank";a.rel="noopener";
+ document.body.appendChild(a);a.click();a.remove();
+ document.getElementById("downloadStatus").textContent="Your download has been opened in your browser. Actual progress is controlled by your browser.";
+ document.getElementById("progressText").textContent="DOWNLOAD STARTED";
+}
+function hideDownload(){document.getElementById("downloadScreen").classList.remove("show")}
+
+/* NEWS */
+
+function renderNews(){
+ document.getElementById("newsList").innerHTML=NEWS.map(n=>`
+ <div class="news-item"><div class="kicker">${esc(n.game)} · ${esc(n.date)}</div><b>${esc(n.title)}</b><p>${esc(n.text)}</p></div>`).join();
+}
+function renderHome(){
+ document.getElementById("featured").innerHTML=GAMES.slice(0,4).map(card).join();
+ document.getElementById("homeNews").innerHTML=NEWS.slice(0,2).map(n=>`<div class="news-item"><b>${esc(n.title)}</b><p>${esc(n.text)}</p></div>`).join();
+}
+function renderAccount(){
+ document.getElementById("accountInfo").innerHTML=user?
+ `<h3>${esc(user.name)}</h3><p>${esc(user.email)}</p><p>Wallet: ${balance()} POINTS</p>`:
+ "Please sign in.";
+}
+
+/* AUTO STATUS BASED ON RELEASE DATE */
+
+function statusOf(g){
+ if(g.status==="RELEASED")return "RELEASED";
+ if(g.releaseDate && new Date(g.releaseDate)<=new Date())return "RELEASED";
+ return g.status;
+}
+
+function init(){
+ GAMES.forEach(g=>{
+  if(g.status==="PRE-ORDER"&&g.releaseDate&&new Date(g.releaseDate)<=new Date()){
+   g.status="RELEASED";
+  }
+ });
+ updateHeader();renderHome();renderStore();
+}
+init();
+
+setInterval(()=>{
+ const timer=document.getElementById("modalTimer");
+ if(timer&&selected&&selected.releaseDate)timer.innerHTML=countdown(selected.releaseDate);
+},1000);
+
+</script>
+</body>
+</html>
